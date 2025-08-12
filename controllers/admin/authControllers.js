@@ -1,12 +1,13 @@
 const jwt = require("jsonwebtoken");
-const Admin = require("../models/Admin");
+const Admin = require("../../models/Admin");
 const {
   hashPassword,
   validateHashedPassword,
-} = require("../utils/passwordHashing");
+} = require("../../utils/passwordHashing");
 
 const adminSignIn = async (req, res) => {
-  // input validation is done now check the db for authentication
+try {
+   // input validation is done now check the db for authentication
 
   // find admin in the db
   const { email, password } = req.body;
@@ -35,9 +36,14 @@ const adminSignIn = async (req, res) => {
   );
 
   res.status(200).json({ success: true, data: authToken });
-};
+} catch (error) {
+  
+  res.status(500).json({ success: false, data: error });
+}
+} 
 
 const adminSignUp = async (req, res) => {
+try {
   // input validation is done now check the db for authentication
 
   // first verify the adminPrivateKey
@@ -69,6 +75,12 @@ const adminSignUp = async (req, res) => {
   await newAdmin.save();
 
   res.status(200).json({ success: true, data: "You're now admin" });
+
+} catch (error) {
+  
+  res.status(500).json({ success: false, data: error });
+}  
+
 };
 
 module.exports = { adminSignIn, adminSignUp };
