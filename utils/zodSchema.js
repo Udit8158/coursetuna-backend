@@ -1,5 +1,22 @@
 const { default: z } = require("zod");
 
+// used to validate the req body while admin sign up
+const adminSignUpSchema = z.object({
+  name: z.string().min(3).max(40),
+  email: z.email().max(40),
+  password: z.string().min(6).max(20),
+  adminPrivateKey: z.string().min(6).max(20),
+});
+
+// used to validate the req body while admin sign in
+const adminSignInSchema = z.object({
+  name: z.string().min(3).max(40).nullish(),
+  email: z.email().max(40),
+  password: z.string().min(6).max(20),
+  adminPrivateKey: z.string().min(6).max(20).nullish(),
+});
+
+// used to validate the req body while createing a course
 const courseSchema = z.object({
   title: z.string().min(6).max(40),
   description: z.string().min(10).max(2000),
@@ -19,4 +36,9 @@ const updateCourseSchema = z.object({
   published: z.boolean().nullish(),
 });
 
-module.exports = { updateCourseSchema, courseSchema };
+module.exports = {
+  updateCourseSchema,
+  courseSchema,
+  adminSignUpSchema,
+  adminSignInSchema,
+};

@@ -1,39 +1,65 @@
 const express = require("express");
+
 const {
   adminSignIn,
   adminSignUp,
 } = require("../controllers/admin/authControllers");
-const {
-  adminSignInInputValidation,
-  adminSignUpInputValidation,
-} = require("../middlewares/admin/adminInputValidation");
+
 const {
   createCourse,
-  getAllCourses,
   updateCourse,
+  getCourse,
+  deleteCourse,
 } = require("../controllers/admin/courseControllers");
+
 const authorizeAsAdmin = require("../middlewares/auth/authorizeAsAdmin");
-const validateReqBody = require("../utils/validateReqBody");
-const { courseSchema, updateCourseSchema } = require("../utils/zodSchema");
+
+const {
+  courseSchema,
+  updateCourseSchema,
+  adminSignUpSchema,
+  adminSignInSchema,
+} = require("../utils/zodSchema");
+
+const {
+  validateCourseReqBody,
+  validateAdminAuthReqBody,
+} = require("../utils/validateReqBody");
+
 const router = express.Router();
 
 // Routes
 
-router.post("/signin", adminSignInInputValidation, adminSignIn);
-router.post("/signup", adminSignUpInputValidation, adminSignUp);
+router.post(
+  "/signin",
+  validateAdminAuthReqBody(adminSignInSchema),
+  adminSignIn
+);
+
+router.post(
+  "/signup",
+  validateAdminAuthReqBody(adminSignUpSchema),
+  adminSignUp
+);
+
 router.post(
   "/courses",
   authorizeAsAdmin,
-  validateReqBody(courseSchema),
+  validateCourseReqBody(courseSchema),
   createCourse
 );
-router.get("/courses", authorizeAsAdmin, getAllCourses);
+
+router.get("/courses", authorizeAsAdmin, getCourse);
+
+router.get("/courses/:id", authorizeAsAdmin, getCourse);
+
 router.put(
   "/courses/:id",
   authorizeAsAdmin,
-  validateReqBody(updateCourseSchema),
+  validateCourseReqBody(updateCourseSchema),
   updateCourse
 );
-// router.delete('/courses/:id')
+
+router.delete("/courses/:id", authorizeAsAdmin, deleteCourse);
 
 module.exports = router;
