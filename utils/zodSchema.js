@@ -8,6 +8,20 @@ const adminSignUpSchema = z.object({
   adminPrivateKey: z.string().min(6).max(20),
 });
 
+// used to validate the req body while user sign up
+const userSignUpSchema = z.object({
+  name: z.string().min(3).max(40),
+  email: z.email().max(40),
+  password: z.string().min(6).max(20),
+});
+
+// used to validate the req body while user sign up
+const userSignInSchema = z.object({
+  email: z.email().max(40),
+  password: z.string().min(6).max(20),
+});
+
+
 // used to validate the req body while admin sign in
 const adminSignInSchema = z.object({
   name: z.string().min(3).max(40).nullish(),
@@ -41,4 +55,6 @@ module.exports = {
   courseSchema,
   adminSignUpSchema,
   adminSignInSchema,
+  userSignUpSchema,
+  userSignInSchema,
 };

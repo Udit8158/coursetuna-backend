@@ -1,7 +1,8 @@
 const express = require("express");
 require("dotenv").config({ path: __dirname + "/.env" });
 const mongoose = require("mongoose");
-const router = require("./routes/adminRoutes");
+const adminRouter = require("./routes/adminRoutes");
+const userRouter = require("./routes/userRoutes");
 
 const app = express();
 const port = process.env.PORT;
@@ -17,8 +18,8 @@ mongoose
 // Global middlwares
 app.use(express.json());
 // Routes
-app.use("/admin", router);
-
+app.use("/admin", adminRouter);
+app.use("/", userRouter);
 
 // Start the server
 app.listen(port, () => {

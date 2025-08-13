@@ -2,6 +2,7 @@
 
 // This is for validating req body in admin authenticaton (signup and sign in)
 const validateAdminAuthReqBody = (zodSchema) => {
+  console.log("validate admin auth req body");
   if (!zodSchema) {
     const error = new Error(
       "zodSchema is not provided inside validateAdminAuthReqBody function"
@@ -10,6 +11,7 @@ const validateAdminAuthReqBody = (zodSchema) => {
   }
 
   return (req, res, next) => {
+    console.log("validating admin auth req body");
     // validate req.body
     if (!req.body)
       return res.status(400).json({ success: false, data: "No body given" });
@@ -67,4 +69,41 @@ const validateCourseReqBody = (zodSchema) => {
   };
 };
 
-module.exports = { validateCourseReqBody, validateAdminAuthReqBody };
+// This is for validating req body in user authenticatin (singup and signin)
+const validateUserAuthReqBody = (zodSchema) => {
+  console.log("validate user auth req body");
+  if (!zodSchema) {
+    const error = new Error(
+      "zodSchema is not provided inside validateUserAuthReqBody function"
+    );
+    throw error;
+  }
+
+  return (req, res, next) => {
+    console.log("validating user auth req boy");
+    // validate req.body
+    if (!req.body)
+      return res.status(400).json({ success: false, data: "No body given" });
+
+    const { name, email, password } = req.body;
+
+    const validationResult = zodSchema.safeParse({
+      name,
+      email,
+      password,
+    });
+
+    if (!validationResult.success)
+      return res
+        .status(400)
+        .json({ success: false, data: validationResult.error.issues });
+
+    next();
+  };
+};
+
+module.exports = {
+  validateCourseReqBody,
+  validateAdminAuthReqBody,
+  validateUserAuthReqBody,
+};

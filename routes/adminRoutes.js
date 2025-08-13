@@ -12,7 +12,7 @@ const {
   deleteCourse,
 } = require("../controllers/admin/courseControllers");
 
-const authorizeAsAdmin = require("../middlewares/auth/authorizeAsAdmin");
+const { authorizeAsAdmin } = require("../middlewares/auth/authorizeAsAdmin");
 
 const {
   courseSchema,
