@@ -113,7 +113,7 @@ const deleteCourse = async (req, res) => {
 
         return res
             .status(200)
-            .json({ success: true, data: "Course delete successfully" });
+            .json({ success: true, data: "Course deleted successfully" });
     } catch (error) {
         return res.status(500).json({ success: false, data: error.message });
     }

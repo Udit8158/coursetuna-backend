@@ -18,9 +18,11 @@ mongoose
 
 // Global middlwares
 app.use(express.json());
+
 // Routes
-app.use("/admin", adminRouter);
-app.use("/", userRouter);
+
+app.use("/api/v1/admin", adminRouter);
+app.use("/api/v1/", userRouter);
 
 // Start the server
 app.listen(port, () => {
