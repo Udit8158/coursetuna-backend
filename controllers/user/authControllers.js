@@ -1,5 +1,5 @@
 const User = require("../../models/User");
-const { createAuthToken } = require("../../utils/jwtHelper");
+const { createUserAuthToken } = require("../../utils/jwtHelper");
 const {
     hashPassword,
     validateHashedPassword,
@@ -53,8 +53,7 @@ const userSignIn = async (req, res) => {
             return res.status(401).json({ success: false, data: "Wrong password" });
 
         // genterate authtoken
-        const authToken = createAuthToken({
-            name: foundUser.name,
+        const authToken = createUserAuthToken({
             id: foundUser._id,
             role: "user",
         });
